@@ -15,7 +15,7 @@ public static class ConsultaOperadora
             var _dados = (ConsultaSituacaoAtual)Processor(numeroTelefone);
 
             if (!_dados.ProcessOk)
-                return Results.NotFound();
+                return Results.NotFound(_dados.MsgError);
 
             return Results.Ok(_dados);
         }
@@ -23,7 +23,7 @@ public static class ConsultaOperadora
     }
 
     #region Metodos
-    
+
     public static object Processor(string numeroTelefone)
     {
         ConsultaSituacaoAtual _dados = new ConsultaSituacaoAtual();
@@ -75,6 +75,19 @@ public static class ConsultaOperadora
                 return _dados;
             }
 
+            var portabilidadeElement = GetSeleniumElement(TipoElemento.XPATH, "/html/body/div[1]/div[2]/div[2]/p[1]");
+            if (portabilidadeElement == null) return _dados;
+
+            _dados.Portabilidade = portabilidadeElement.Text.Trim().Replace("PORTABILIDADE:\r\n", "");
+
+            if (_dados.Portabilidade.Contains("Ops! O número não foi encontrado."))
+            {
+                _dados.MsgError = _dados.Portabilidade;
+                _dados.Portabilidade = "Não";
+
+                return _dados;
+            }
+
             var existeH2 = GetSeleniumElement(TipoElemento.TAGNAME, "h2");
 
             if (existeH2 == null)
@@ -97,10 +110,6 @@ public static class ConsultaOperadora
                 _dados.TipoTelefone = listInfo[1].Trim();
             }
 
-            var portabilidadeElement = GetSeleniumElement(TipoElemento.XPATH, "/html/body/div[1]/div[2]/div[2]/p[1]");
-            if (portabilidadeElement == null) return _dados;
-
-            _dados.Portabilidade = portabilidadeElement.Text.Trim().Replace("PORTABILIDADE:\r\n", "");
 
             var ufElement = GetSeleniumElement(TipoElemento.XPATH, "/html/body/div[1]/div[2]/div[2]/p[2]");
             if (ufElement == null) return _dados;
