@@ -12,8 +12,3 @@ Verificar e atualizar biblioteca do Nuget, principalmente o Selenium.WebDriver.C
 <div align="center">
 <img src="https://user-images.githubusercontent.com/8194957/231879560-2827da92-ced7-4b62-9480-6956c962ed95.jpg" width="700px"/>
 </div>
-
-# Numero invalido
-<div align="center">
-<img src="https://user-images.githubusercontent.com/8194957/231879560-2827da92-ced7-4b62-9480-6956c962ed95.jpg" width="700px />
-</div>
